@@ -1,0 +1,607 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>5th Grade Class Election</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080808;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(220,0,0,.25), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(255,40,40,.15), transparent 30%);
+      z-index: -2;
+      animation: backgroundMove 8s infinite alternate;
+    }
+
+    @keyframes backgroundMove {
+      from { transform: scale(1); }
+      to { transform: scale(1.15); }
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0,0,0,.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 7%;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ff3030;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 25px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #ff3030;
+    }
+
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 70px 20px;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 900px;
+    }
+
+    .small-title {
+      color: #ff3030;
+      font-weight: 900;
+      letter-spacing: 4px;
+      font-size: 18px;
+    }
+
+    h1 {
+      font-size: clamp(60px, 12vw, 130px);
+      line-height: .85;
+      margin: 20px 0;
+      font-weight: 1000;
+      text-transform: uppercase;
+      text-shadow:
+        5px 5px 0 #8b0000,
+        0 0 35px rgba(255,0,0,.4);
+    }
+
+    .vice {
+      display: inline-block;
+      background: #ff2020;
+      padding: 12px 30px;
+      transform: rotate(-2deg);
+      font-size: 25px;
+      font-weight: 900;
+      margin-bottom: 25px;
+      box-shadow: 8px 8px 0 #650000;
+    }
+
+    .hero p {
+      font-size: 21px;
+      color: #ddd;
+      max-width: 650px;
+      margin: 20px auto;
+      line-height: 1.6;
+    }
+
+    .main-button {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 18px 35px;
+      background: #ff2020;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 8px 0 #8b0000;
+      transition: .2s;
+    }
+
+    .main-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 0 #8b0000;
+    }
+
+    .star {
+      position: absolute;
+      color: #ff3030;
+      font-size: 35px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .star.one {
+      top: 20%;
+      left: 10%;
+    }
+
+    .star.two {
+      top: 30%;
+      right: 10%;
+      animation-delay: 1s;
+    }
+
+    .star.three {
+      bottom: 15%;
+      left: 20%;
+      animation-delay: 2s;
+    }
+
+    @keyframes float {
+      50% {
+        transform: translateY(-20px) rotate(15deg);
+      }
+    }
+
+    section {
+      padding: 90px 7%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-label {
+      color: #ff3030;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 50px;
+      margin-top: 10px;
+      margin-bottom: 50px;
+    }
+
+    .candidates {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #171717, #0c0c0c);
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 35px 25px;
+      text-align: center;
+      transition: .3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 5px;
+      width: 100%;
+      background: #ff2020;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: #ff2020;
+      box-shadow: 0 15px 40px rgba(255,0,0,.2);
+    }
+
+    .icon {
+      font-size: 55px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      color: #ff3030;
+      font-size: 30px;
+      margin: 10px 0;
+    }
+
+    .role {
+      display: inline-block;
+      background: #ff2020;
+      color: white;
+      padding: 7px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    .card p {
+      color: #ccc;
+      line-height: 1.6;
+      margin-top: 20px;
+    }
+
+    .promises {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .promise {
+      background: #111;
+      border-left: 5px solid #ff2020;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    .promise h3 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    .promise p {
+      color: #bbb;
+      line-height: 1.5;
+    }
+
+    .cta {
+      text-align: center;
+      background: linear-gradient(135deg, #8b0000, #ff2020);
+      border-radius: 30px;
+      margin: 60px auto;
+      max-width: 1000px;
+      padding: 70px 30px;
+    }
+
+    .cta h2 {
+      font-size: 50px;
+      margin-top: 0;
+    }
+
+    .cta p {
+      font-size: 20px;
+    }
+
+    .support {
+      background: white;
+      color: #d00000;
+      border: none;
+      padding: 18px 40px;
+      border-radius: 50px;
+      font-size: 21px;
+      font-weight: 900;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: .2s;
+    }
+
+    .support:hover {
+      transform: scale(1.08);
+    }
+
+    #thanks {
+      display: none;
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #777;
+      border-top: 1px solid #222;
+    }
+
+    @media (max-width: 800px) {
+      nav a {
+        display: none;
+      }
+
+      .candidates,
+      .promises {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 38px;
+      }
+
+      h1 {
+        font-size: 70px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">AXEL W ★</div>
+
+    <div>
+      <a href="#team">TEAM</a>
+      <a href="#promises">PROMISES</a>
+      <a href="#vote">VOTE</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+
+  <div class="hero">
+
+    <div class="star one">★</div>
+    <div class="star two">★</div>
+    <div class="star three">★</div>
+
+    <div class="hero-content">
+
+      <div class="small-title">
+        5TH GRADE CLASS ELECTION
+      </div>
+
+      <h1>
+        AXEL<br>W
+      </h1>
+
+      <div class="vice">
+        CLASS VICE PRESIDENT
+      </div>
+
+      <p>
+        Vote Axel W for Vice President!
+        A leader who listens, helps the president,
+        and helps make fair classroom rules.
+      </p>
+
+      <a class="main-button" href="#vote">
+        🗳️ VOTE AXEL W
+      </a>
+
+    </div>
+  </div>
+
+  <!-- TEAM -->
+
+  <section id="team">
+
+    <div class="section-label">
+      THE TEAM
+    </div>
+
+    <h2 class="section-title">
+      MEET THE CANDIDATES
+    </h2>
+
+    <div class="candidates">
+
+      <!-- ERICK -->
+
+      <div class="card">
+
+        <div class="icon">👑</div>
+
+        <h3>ERICK</h3>
+
+        <span class="role">
+          CLASS PRESIDENT
+        </span>
+
+        <p>
+          Vote Erick for Class President!
+          Let's work together to make
+          5th grade great.
+        </p>
+
+      </div>
+
+      <!-- AXEL -->
+
+      <div class="card">
+
+        <div class="icon">⭐</div>
+
+        <h3>AXEL W</h3>
+
+        <span class="role">
+          VICE PRESIDENT
+        </span>
+
+        <p>
+          Axel helps the president, listens
+          to classmates, and helps create
+          and enforce fair classroom rules.
+        </p>
+
+      </div>
+
+      <!-- DENNIS -->
+
+      <div class="card">
+
+        <div class="icon">🛡️</div>
+
+        <h3>DENNIS</h3>
+
+        <span class="role">
+          SHERIFF
+        </span>
+
+        <p>
+          Dennis helps keep track of classroom
+          rules and reports people breaking
+          the rules to the teacher.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- AXEL'S PLAN -->
+
+  <section id="promises">
+
+    <div class="section-label">
+      AXEL'S PLAN
+    </div>
+
+    <h2 class="section-title">
+      WHAT I WILL DO
+    </h2>
+
+    <div class="promises">
+
+      <div class="promise">
+        <h3>📋 Fair Rules</h3>
+        <p>
+          Help create and enforce classroom
+          rules that are fair to everyone.
+        </p>
+      </div>
+
+      <div class="promise">
+        <h3>👂 Listen</h3>
+        <p>
+          Make sure classmates have a chance
+          to share their ideas.
+        </p>
+      </div>
+
+      <div class="promise">
+        <h3>🤝 Support the President</h3>
+        <p>
+          Work with Erick and help the president
+          keep our class organized.
+        </p>
+      </div>
+
+      <div class="promise">
+        <h3>⭐ Make 5th Grade Awesome</h3>
+        <p>
+          Help make our classroom a fun,
+          respectful place to learn.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- VOTE -->
+
+  <section id="vote">
+
+    <div class="cta">
+
+      <h2>READY TO VOTE?</h2>
+
+      <p>
+        Vote Erick for President,
+        Axel W for Vice President,
+        and Dennis for Sheriff!
+      </p>
+
+      <button class="support" onclick="support()">
+        🗳️ SUPPORT THE TEAM!
+      </button>
+
+      <div id="thanks">
+        🎉 LET'S GO! Thanks for supporting the team!
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer>
+    ⭐ 5TH GRADE CLASS ELECTION ⭐
+    <br><br>
+    Erick • President &nbsp; | &nbsp;
+    Axel W • Vice President &nbsp; | &nbsp;
+    Dennis • Sheriff
+  </footer>
+
+  <script>
+
+    function support() {
+
+      document.getElementById("thanks").style.display = "block";
+
+      for (let i = 0; i < 80; i++) {
+
+        const confetti = document.createElement("div");
+
+        confetti.style.position = "fixed";
+        confetti.style.width = "8px";
+        confetti.style.height = "8px";
+
+        confetti.style.background =
+          Math.random() > 0.5 ? "#ff2020" : "#ffffff";
+
+        confetti.style.left =
+          Math.random() * 100 + "vw";
+
+        confetti.style.top = "-10px";
+
+        confetti.style.zIndex = "9999";
+
+        document.body.appendChild(confetti);
+
+        const fall = confetti.animate(
+          [
+            {
+              transform: "translateY(0) rotate(0deg)"
+            },
+            {
+              transform:
+                "translateY(110vh) rotate(720deg)"
+            }
+          ],
+          {
+            duration: 2000 + Math.random() * 2000,
+            easing: "linear"
+          }
+        );
+
+        fall.onfinish = () => confetti.remove();
+      }
+    }
+
+  </script>
+
+</body>
+</html>
+```

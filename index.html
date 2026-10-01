@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>5th Grade Class Election</title>
+
+<style>
+
+/* =========================
+   RESET
+========================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #050505;
+  color: white;
+  overflow-x: hidden;
+}
+
+
+/* =========================
+   NAV
+========================= */
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 18px 7%;
+
+  background: rgba(5, 5, 5, 0.94);
+  backdrop-filter: blur(15px);
+
+  border-bottom: 2px solid #ff2020;
+}
+
+.logo {
+  color: #ff2020;
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 25px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+nav a:hover {
+  color: #ff2020;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  min-height: 92vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  position: relative;
+  overflow: hidden;
+
+  padding: 60px 20px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #650000 0%,
+      #250000 28%,
+      #070707 72%
+    );
+}
+
+.hero::before {
+  content: "";
+
+  position: absolute;
+
+  width: 650px;
+  height: 650px;
+
+  border: 2px solid rgba(255, 30, 30, 0.15);
+
+  border-radius: 50%;
+
+  animation: spin 20s linear infinite;
+}
+
+.hero::after {
+  content: "";
+
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  background: #ff0000;
+
+  filter: blur(180px);
+
+  opacity: 0.18;
+}
+
+@keyframes spin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.eyebrow {
+  color: #ff3030;
+
+  font-size: 16px;
+
+  font-weight: 900;
+
+  letter-spacing: 5px;
+
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  font-size: clamp(80px, 14vw, 160px);
+
+  line-height: 0.8;
+
+  font-weight: 1000;
+
+  letter-spacing: -8px;
+
+  text-shadow:
+    8px 8px 0 #700000,
+    0 0 40px rgba(255, 0, 0, 0.3);
+}
+
+.hero-role {
+  display: inline-block;
+
+  margin-top: 40px;
+
+  padding: 15px 30px;
+
+  background: #ff2020;
+
+  border-radius: 50px;
+
+  font-size: 20px;
+
+  font-weight: 900;
+
+  box-shadow:
+    0 8px 0 #680000,
+    0 0 30px rgba(255, 0, 0, 0.3);
+}
+
+.hero p {
+  max-width: 650px;
+
+  margin: 35px auto;
+
+  color: #ccc;
+
+  font-size: 19px;
+
+  line-height: 1.7;
+}
+
+.hero-button {
+  display: inline-block;
+
+  padding: 16px 30px;
+
+  background: white;
+
+  color: #111;
+
+  text-decoration: none;
+
+  border-radius: 50px;
+
+  font-weight: 900;
+
+  transition: 0.2s;
+}
+
+.hero-button:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 12px 30px rgba(255, 255, 255, 0.15);
+}
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+section {
+  max-width: 1250px;
+
+  margin: auto;
+
+  padding: 100px 6%;
+}
+
+.section-label {
+  color: #ff2020;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  font-weight: 900;
+
+  letter-spacing: 5px;
+}
+
+.section-title {
+  text-align: center;
+
+  font-size: clamp(42px, 6vw, 70px);
+
+  margin-top: 10px;
+
+  margin-bottom: 60px;
+
+  font-weight: 1000;
+}
+
+
+/* =========================
+   CANDIDATES
+========================= */
+
+.candidates {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 25px;
+}
+
+.candidate {
+  min-height: 500px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  padding: 35px 25px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      #191919,
+      #0d0d0d
+    );
+
+  border: 1px solid #333;
+
+  border-radius: 25px;
+
+  transition: 0.3s;
+}
+
+.candidate::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #750000,
+      #ff2020,
+      #750000
+    );
+}
+
+.candidate:hover {
+  transform: translateY(-10px);
+
+  border-color: #ff2020;
+
+  box-shadow:
+    0 20px 60px rgba(255, 0, 0, 0.2);
+}
+
+.candidate-info {
+  cursor: pointer;
+}
+
+.candidate-icon {
+  font-size: 75px;
+
+  margin-top: 10px;
+
+  margin-bottom: 20px;
+}
+
+.candidate h3 {
+  font-size: 35px;
+
+  margin-bottom: 15px;
+
+  font-weight: 1000;
+}
+
+.candidate-role {
+  display: inline-block;
+
+  padding: 8px 15px;
+
+  background: #ff2020;
+
+  border-radius: 30px;
+
+  font-size: 12px;
+
+  font-weight: 900;
+}
+
+.candidate p {
+  color: #999;
+
+  margin-top: 25px;
+
+  line-height: 1.6;
+}
+
+.click-text {
+  color: #ff3030 !important;
+
+  font-weight: bold;
+}
+
+
+/* =========================
+   VOTE BUTTONS
+========================= */
+
+.vote-button {
+  width: 100%;
+
+  margin-top: auto;
+
+  padding: 17px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ff2020,
+      #b90000
+    );
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 0 #650000;
+
+  transition: 0.2s;
+}
+
+.vote-button:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 10px 0 #650000,
+    0 0 30px rgba(255, 0, 0, 0.3);
+}
+
+.vote-button:active {
+  transform: translateY(3px);
+
+  box-shadow:
+    0 3px 0 #650000;
+}
+
+.vote-button.selected {
+  background: white;
+
+  color: #111;
+
+  box-shadow:
+    0 6px 0 #aaa;
+}
+
+
+/* =========================
+   JOBS
+========================= */
+
+.jobs {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+.job {
+  padding: 30px;
+
+  background: #111;
+
+  border: 1px solid #292929;
+
+  border-left: 5px solid #ff2020;
+
+  border-radius: 15px;
+
+  transition: 0.2s;
+}
+
+.job:hover {
+  transform: translateY(-5px);
+
+  border-color: #ff2020;
+}
+
+.job-icon {
+  font-size: 38px;
+
+  margin-bottom: 15px;
+}
+
+.job h3 {
+  font-size: 24px;
+
+  margin-bottom: 12px;
+}
+
+.job p {
+  color: #aaa;
+
+  line-height: 1.6;
+}
+
+
+/* =========================
+   ELECTION BOX
+========================= */
+
+.election-box {
+  text-align: center;
+
+  padding: 80px 30px;
+
+  border-radius: 30px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #ff2020,
+      #850000 55%,
+      #350000
+    );
+
+  box-shadow:
+    0 25px 80px rgba(255, 0, 0, 0.2);
+}
+
+.election-box h2 {
+  font-size: clamp(42px, 7vw, 75px);
+
+  margin-bottom: 20px;
+}
+
+.election-box p {
+  max-width: 650px;
+
+  margin: auto;
+
+  font-size: 18px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+  text-align: center;
+
+  padding: 50px 20px;
+
+  background: #030303;
+
+  border-top: 1px solid #222;
+
+  color: #666;
+}
+
+
+/* =========================
+   PROFILE POPUP
+========================= */
+
+.profile {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 5000;
+
+  display: none;
+
+  grid-template-columns:
+    40% 60%;
+
+  background: #070707;
+}
+
+.profile.show {
+  display: grid;
+
+  animation: profileOpen 0.25s ease;
+}
+
+@keyframes profileOpen {
+
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+}
+
+.profile-left {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-align: center;
+
+  padding: 40px;
+
+  background:
+    radial-gradient(
+      circle,
+      #700000,
+      #120000 70%
+    );
+
+  border-right: 2px solid #ff2020;
+}
+
+.profile-icon {
+  font-size: 110px;
+
+  margin-bottom: 25px;
+}
+
+.profile-name {
+  font-size: clamp(55px, 7vw, 100px);
+
+  font-weight: 1000;
+
+  line-height: 0.9;
+
+  text-shadow:
+    6px 6px 0 #650000;
+}
+
+.profile-role {
+  margin-top: 30px;
+
+  padding: 13px 25px;
+
+  background: #ff2020;
+
+  border-radius: 50px;
+
+  font-weight: 900;
+}
+
+.profile-right {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding: 80px;
+}
+
+.profile-right h2 {
+  font-size: 55px;
+
+  margin-bottom: 25px;
+}
+
+.profile-right p {
+  max-width: 700px;
+
+  color: #ccc;
+
+  font-size: 22px;
+
+  line-height: 1.7;
+}
+
+.close {
+  position: absolute;
+
+  top: 25px;
+  right: 30px;
+
+  width: 55px;
+  height: 55px;
+
+  border-radius: 50%;
+
+  border: 1px solid #444;
+
+  background: #151515;
+
+  color: white;
+
+  font-size: 30px;
+
+  cursor: pointer;
+}
+
+.close:hover {
+  background: #ff2020;
+
+  border-color: #ff2020;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 850px) {
+
+  nav {
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+  nav a {
+    margin: 0 8px;
+  }
+
+  .candidates,
+  .jobs {
+    grid-template-columns: 1fr;
+  }
+
+  .profile {
+    grid-template-columns: 1fr;
+
+    overflow-y: auto;
+  }
+
+  .profile-left {
+    min-height: 45vh;
+
+    border-right: none;
+
+    border-bottom: 2px solid #ff2020;
+  }
+
+  .profile-right {
+    min-height: 55vh;
+
+    padding: 50px 25px;
+  }
+
+  .profile-right h2 {
+    font-size: 40px;
+  }
+
+  .profile-right p {
+    font-size: 18px;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAV
+========================= -->
+
+<nav>
+
+  <div class="logo">
+    5TH GRADE ★
+  </div>
+
+  <div>
+
+    <a href="#candidates">
+      CANDIDATES
+    </a>
+
+    <a href="#jobs">
+      JOBS
+    </a>
+
+    <a href="#election">
+      ELECTION
+    </a>
+
+  </div>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<header class="hero">
+
+  <div class="hero-content">
+
+    <div class="eyebrow">
+      5TH GRADE CLASS ELECTION
+    </div>
+
+    <h1>
+      AXEL W
+    </h1>
+
+    <div class="hero-role">
+      RUNNING FOR VICE PRESIDENT
+    </div>
+
+    <p>
+      Three candidates. Three different
+      classroom positions. Check out each
+      candidate and their role.
+    </p>
+
+    <a
+      href="#candidates"
+      class="hero-button"
+    >
+      MEET THE CANDIDATES ↓
+    </a>
+
+  </div>
+
+</header>
+
+
+<!-- =========================
+     CANDIDATES
+========================= -->
+
+<section id="candidates">
+
+  <div class="section-label">
+    THE ELECTION
+  </div>
+
+  <h2 class="section-title">
+    MEET THE CANDIDATES
+  </h2>
+
+
+  <div class="candidates">
+
+
+    <!-- ERICK -->
+
+    <div class="candidate">
+
+      <div
+        class="candidate-info"
+        onclick="openProfile(
+          'ERICK',
+          'CLASS PRESIDENT',
+          '👑',
+          'The Class President enforces the classroom rules and leads the class.'
+        )"
+      >
+
+        <div class="candidate-icon">
+          👑
+        </div>
+
+        <h3>
+          ERICK
+        </h3>
+
+        <span class="candidate-role">
+          RUNNING FOR PRESIDENT
+        </span>
+
+        <p>
+          Candidate for Class President.
+        </p>
+
+        <p class="click-text">
+          VIEW PROFILE →
+        </p>
+
+      </div>
+
+
+      <button
+        class="vote-button"
+        onclick="voteFor('ERICK', this)"
+      >
+        🗳️ VOTE FOR ERICK
+      </button>
+
+    </div>
+
+
+    <!-- AXEL -->
+
+    <div class="candidate">
+
+      <div
+        class="candidate-info"
+        onclick="openProfile(
+          'AXEL W',
+          'CLASS VICE PRESIDENT',
+          '⭐',
+          'The Vice President helps the President enforce the classroom rules. If the President is gone, the Vice President takes over the President’s job for however long the President is gone.'
+        )"
+      >
+
+        <div class="candidate-icon">
+          ⭐
+        </div>
+
+        <h3>
+          AXEL W
+        </h3>
+
+        <span class="candidate-role">
+          RUNNING FOR VICE PRESIDENT
+        </span>
+
+        <p>
+          Candidate for Class Vice President.
+        </p>
+
+        <p class="click-text">
+          VIEW PROFILE →
+        </p>
+
+      </div>
+
+
+      <button
+        class="vote-button"
+        onclick="voteFor('AXEL W', this)"
+      >
+        🗳️ VOTE FOR AXEL W
+      </button>
+
+    </div>
+
+
+    <!-- DENNIS -->
+
+    <div class="candidate">
+
+      <div
+        class="candidate-info"
+        onclick="openProfile(
+          'DENNIS',
+          'SHERIFF',
+          '🛡️',
+          'The Sheriff reports people who are breaking the classroom rules to the teacher.'
+        )"
+      >
+
+        <div class="candidate-icon">
+          🛡️
+        </div>
+
+        <h3>
+          DENNIS
+        </h3>
+
+        <span class="candidate-role">
+          RUNNING FOR SHERIFF
+        </span>
+
+        <p>
+          Candidate for Sheriff.
+        </p>
+
+        <p class="click-text">
+          VIEW PROFILE →
+        </p>
+
+      </div>
+
+
+      <button
+        class="vote-button"
+        onclick="voteFor('DENNIS', this)"
+      >
+        🗳️ VOTE FOR DENNIS
+      </button>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     JOBS
+========================= -->
+
+<section id="jobs">
+
+  <div class="section-label">
+    THE POSITIONS
+  </div>
+
+  <h2 class="section-title">
+    WHAT THE JOBS DO
+  </h2>
+
+
+  <div class="jobs">
+
+
+    <div class="job">
+
+      <div class="job-icon">
+        👑
+      </div>
+
+      <h3>
+        Class President
+      </h3>
+
+      <p>
+        Enforces the classroom rules
+        and leads the class.
+      </p>
+
+    </div>
+
+
+    <div class="job">
+
+      <div class="job-icon">
+        ⭐
+      </div>
+
+      <h3>
+        Class Vice President
+      </h3>
+
+      <p>
+        Helps the President enforce the
+        classroom rules and takes over the
+        President's job when the President
+        is gone.
+      </p>
+
+    </div>
+
+
+    <div class="job">
+
+      <div class="job-icon">
+        🛡️
+      </div>
+
+      <h3>
+        Sheriff
+      </h3>
+
+      <p>
+        Reports people breaking the
+        classroom rules to the teacher.
+      </p>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     ELECTION
+========================= -->
+
+<section id="election">
+
+  <div class="election-box">
+
+    <h2>
+      CLASS ELECTION
+    </h2>
+
+    <p>
+      Erick is running for President,
+      Axel W is running for Vice President,
+      and Dennis is running for Sheriff.
+      Each position is a separate race.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+  ★ 5TH GRADE CLASS ELECTION ★
+
+  <br>
+  <br>
+
+  Erick • President
+  &nbsp; | &nbsp;
+
+  Axel W • Vice President
+  &nbsp; | &nbsp;
+
+  Dennis • Sheriff
+
+</footer>
+
+
+<!-- =========================
+     PROFILE
+========================= -->
+
+<div
+  id="profile"
+  class="profile"
+>
+
+  <div class="profile-left">
+
+    <div
+      id="profileIcon"
+      class="profile-icon"
+    ></div>
+
+    <h1
+      id="profileName"
+      class="profile-name"
+    ></h1>
+
+    <div
+      id="profileRole"
+      class="profile-role"
+    ></div>
+
+  </div>
+
+
+  <div class="profile-right">
+
+    <button
+      class="close"
+      onclick="closeProfile()"
+    >
+      ×
+    </button>
+
+    <h2>
+      ABOUT THE ROLE
+    </h2>
+
+    <p
+      id="profileDescription"
+    ></p>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+
+/* PROFILE OPEN */
+
+function openProfile(
+  name,
+  role,
+  icon,
+  description
+) {
+
+  document.getElementById(
+    "profileName"
+  ).textContent = name;
+
+  document.getElementById(
+    "profileRole"
+  ).textContent = role;
+
+  document.getElementById(
+    "profileIcon"
+  ).textContent = icon;
+
+  document.getElementById(
+    "profileDescription"
+  ).textContent = description;
+
+  document.getElementById(
+    "profile"
+  ).classList.add("show");
+
+  document.body.style.overflow = "hidden";
+
+}
+
+
+/* PROFILE CLOSE */
+
+function closeProfile() {
+
+  document.getElementById(
+    "profile"
+  ).classList.remove("show");
+
+  document.body.style.overflow = "";
+
+}
+
+
+/* ESC CLOSES PROFILE */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (event.key === "Escape") {
+      closeProfile();
+    }
+
+  }
+);
+
+
+/* =========================
+   VOTING
+========================= */
+
+function voteFor(
+  candidate,
+  button
+) {
+
+  if (
+    button.classList.contains("selected")
+  ) {
+
+    button.classList.remove("selected");
+
+    button.textContent =
+      "🗳️ VOTE FOR " +
+      candidate;
+
+  } else {
+
+    button.classList.add("selected");
+
+    button.textContent =
+      "✓ VOTED FOR " +
+      candidate;
+
+  }
+
+}
+
+</script>
+
+
+</body>
+</html>

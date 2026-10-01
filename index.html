@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5th Grade Class Election</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f1f3f4;
+      color: #202124;
+    }
+
+    .topbar {
+      background: white;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 25px;
+      border-bottom: 1px solid #ddd;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #d93025;
+    }
+
+    .doc-name {
+      margin-left: 20px;
+      color: #555;
+    }
+
+    .page {
+      background: white;
+      width: 800px;
+      max-width: 90%;
+      margin: 40px auto;
+      padding: 60px;
+      box-sizing: border-box;
+      min-height: 1000px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .grade {
+      text-align: center;
+      color: #d93025;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d93025;
+      font-size: 60px;
+      margin: 15px 0 5px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 30px;
+    }
+
+    .underline {
+      height: 5px;
+      background: #d93025;
+      width: 70%;
+      margin: 25px auto 35px;
+      border-radius: 5px;
+    }
+
+    .description {
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #444;
+    }
+
+    .section-title {
+      color: #d93025;
+      font-size: 27px;
+      margin-top: 45px;
+      border-bottom: 3px solid #d93025;
+      padding-bottom: 8px;
+    }
+
+    .candidates {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .candidate {
+      border: 2px solid #d93025;
+      border-radius: 12px;
+      padding: 22px;
+      background: white;
+      text-align: center;
+    }
+
+    .candidate h3 {
+      color: #d93025;
+      font-size: 27px;
+      margin: 5px;
+    }
+
+    .candidate p {
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .vote-button {
+      display: block;
+      width: 80%;
+      margin: 45px auto 20px;
+      padding: 18px;
+      background: #d93025;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .vote-button:hover {
+      background: #b71c1c;
+    }
+
+    .message {
+      text-align: center;
+      font-weight: bold;
+      color: #d93025;
+      font-size: 20px;
+      display: none;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 45px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="logo">Docs</div>
+    <div class="doc-name">5th Grade Class Election</div>
+  </div>
+
+  <main class="page">
+
+    <div class="grade">5TH GRADE CLASS ELECTION</div>
+
+    <h1>VOTE FOR<br>AXEL W</h1>
+
+    <div class="underline"></div>
+
+    <h2>CLASS PRESIDENT</h2>
+
+    <p class="description">
+      Let's make 5th grade organized, respectful, fair, and fun!
+    </p>
+
+    <h2 class="section-title">THE TEAM</h2>
+
+    <div class="candidates">
+
+      <!-- AXEL -->
+      <div class="candidate">
+        <h3>⭐ AXEL W</h3>
+        <strong>CLASS PRESIDENT</strong>
+        <p>
+          A leader who listens, helps classmates,
+          and works to make our classroom awesome.
+        </p>
+      </div>
+
+      <!-- ERICK -->
+      <div class="candidate">
+        <h3>⭐ ERICK</h3>
+        <strong>PRESIDENT</strong>
+        <p>
+          Vote Erick for president!
+          Let's work together and make 5th grade great.
+        </p>
+      </div>
+
+      <!-- DENNIS -->
+      <div class="candidate">
+        <h3>⭐ DENNIS</h3>
+        <strong>SHERIFF</strong>
+        <p>
+          Vote Dennis for sheriff!
+          He helps keep track of classroom rules
+          and reports people breaking the rules to the teacher.
+        </p>
+      </div>
+
+    </div>
+
+    <h2 class="section-title">LET'S DO THIS!</h2>
+
+    <p class="description">
+      Together, we can make 5th grade a fun and

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cast Your Vote • 5th Grade Election</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#050505;
+  color:#fff;
+  min-height:100vh;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(255,0,0,.12),transparent 30%),
+    radial-gradient(circle at 80% 80%,rgba(255,0,0,.08),transparent 30%);
+}
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  background:rgba(5,5,5,.92);
+  border-bottom:1px solid #222;
+  backdrop-filter:blur(15px);
+}
+
+.logo{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.logo span{color:#ff2020}
+
+.nav-links{
+  display:flex;
+  gap:10px;
+}
+
+.nav-links a{
+  color:#fff;
+  text-decoration:none;
+  padding:10px 16px;
+  border:1px solid #333;
+  border-radius:10px;
+  font-weight:700;
+}
+
+.nav-links a:hover{
+  border-color:#ff2020;
+  background:#ff2020;
+}
+
+.hero{
+  text-align:center;
+  padding:85px 20px 60px;
+}
+
+.hero .tag{
+  color:#ff2020;
+  font-weight:900;
+  letter-spacing:3px;
+  font-size:13px;
+}
+
+.hero h1{
+  margin-top:15px;
+  font-size:clamp(42px,8vw,85px);
+  line-height:.95;
+  font-weight:1000;
+}
+
+.hero p{
+  margin:20px auto 0;
+  max-width:650px;
+  color:#aaa;
+  font-size:18px;
+  line-height:1.6;
+}
+
+.summary{
+  width:min(1100px,92%);
+  margin:0 auto 45px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.stat{
+  background:#101010;
+  border:1px solid #242424;
+  border-radius:18px;
+  padding:22px;
+  text-align:center;
+}
+
+.stat-number{
+  font-size:35px;
+  font-weight:1000;
+  color:#ff2020;
+}
+
+.stat-label{
+  margin-top:5px;
+  color:#aaa;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.container{
+  width:min(1100px,92%);
+  margin:auto;
+  padding-bottom:80px;
+}
+
+.race{
+  margin-bottom:45px;
+}
+
+.race-header{
+  margin-bottom:18px;
+}
+
+.race-label{
+  color:#ff2020;
+  font-weight:900;
+  letter-spacing:2px;
+  font-size:12px;
+  text-transform:uppercase;
+}
+
+.race h2{
+  margin-top:5px;
+  font-size:32px;
+}
+
+.race-description{
+  color:#999;
+  margin-top:6px;
+}
+
+.candidates{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.candidate{
+  background:#101010;
+  border:1px solid #252525;
+  border-radius:18px;
+  padding:20px;
+  transition:.2s;
+}
+
+.candidate:hover{
+  transform:translateY(-3px);
+  border-color:#555;
+}
+
+.candidate.selected{
+  border-color:#ff2020;
+  box-shadow:0 0 25px rgba(255,0,0,.12);
+}
+
+.candidate-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.name{
+  font-size:22px;
+  font-weight:900;
+}
+
+.vote-btn{
+  border:0;
+  background:#ff2020;
+  color:white;
+  padding:11px 15px;
+  border-radius:10px;
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.vote-btn:hover{
+  background:#ff4040;
+}
+
+.candidate.selected .vote-btn{
+  background:#fff;
+  color:#111;
+}
+
+.bar-area{
+  margin-top:18px;
+}
+
+.bar-info{
+  display:flex;
+  justify-content:space-between;
+  color:#aaa;
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+.bar{
+  height:10px;
+  width:100%;
+  background:#252525;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.bar-fill{
+  height:100%;
+  width:0%;
+  background:#ff2020;
+  border-radius:20px;
+  transition:width .5s ease;
+}
+
+.limit{
+  margin-top:7px;
+  color:#666;
+  font-size:11px;
+}
+
+.info{
+  background:#0d0d0d;
+  border:1px solid #222;
+  border-radius:20px;
+  padding:28px;
+  margin-top:20px;
+}
+
+.info h3{
+  margin-bottom:10px;
+  font-size:23px;
+}
+
+.info p{
+  color:#999;
+  line-height:1.6;
+}
+
+.status{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:200;
+  background:#111;
+  border:1px solid #333;
+  border-radius:12px;
+  padding:12px 16px;
+  color:#aaa;
+  font-size:13px;
+  opacity:0;
+  transform:translateY(10px);
+  pointer-events:none;
+  transition:.25s;
+}
+
+.status.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.status.good{border-color:#20c96b;color:#20c96b}
+.status.bad{border-color:#ff2020;color:#ff6060}
+
+footer{
+  border-top:1px solid #222;
+  padding:35px 20px;
+  text-align:center;
+  color:#666;
+}
+
+@media(max-width:700px){
+  nav{padding:0 4%}
+  .logo{font-size:16px}
+  .nav-links a{padding:8px 11px;font-size:12px}
+
+  .summary{
+    grid-template-columns:1fr;
+  }
+
+  .candidates{
+    grid-template-columns:1fr;
+  }
+
+  .candidate-top{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .vote-btn{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">5TH GRADE <span>ELECTION</span></div>
+
+  <div class="nav-links">
+    <a href="index.html">HOME</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="tag">🗳️ OFFICIAL BALLOT</div>
+  <h1>CAST YOUR<br><span style="color:#ff2020">VOTE</span></h1>
+  <p>
+    Choose one candidate in each race. Your selections are saved so you can
+    come back and change them.
+  </p>
+</section>
+
+<section class="summary">
+  <div class="stat">
+    <div class="stat-number" id="racesSelected">0/4</div>
+    <div class="stat-label">Races Selected</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-number" id="totalSelections">0</div>
+    <div class="stat-label">Your Selections</div>
+  </div>
+
+  <div class="stat">
+    <div class="stat-number" id="totalVoters">0/100</div>
+    <div class="stat-label">Total Voters</div>
+  </div>
+</section>
+
+<main class="container">
+
+  <!-- PRESIDENT -->
+  <section class="race">
+    <div class="race-header">
+      <div class="race-label">Race 01</div>
+      <h2>Class President</h2>
+      <p class="race-description">
+        Leads the class and helps enforce classroom rules.
+      </p>
+    </div>
+
+    <div class="candidates">
+
+      <div class="candidate" data-race="president" data-candidate="Erick">
+        <div class="candidate-top">
+          <div class="name">Erick</div>
+          <button class="vote-btn">🗳️ VOTE FOR ERICK</button>
+        </div>
+        <div class="bar-area">
+          <div class="bar-info">
+            <span>Votes</span>
+            <span class="count">0 / 35</span>
+          </div>
+          <div class="bar"><div class="bar-fill"></div></div>
+          <div class="limit">Maximum: 35 votes</div>
+        </div>
+      </div>
+
+      <div class="candidate" data-race="president" data-candidate="Sariya">
+        <div class="candidate-top">
+          <div class="name">Sariya</div>
+          <button class="vote-btn">🗳️ VOTE FOR SARIYA</button>
+        </div>
+        <div class="bar-area">
+          <div class="bar-info">
+            <span>Votes</span>
+            <span class="count">0 / 35</span>
+          </div>
+          <div class="bar"><div class="bar-fill"></div></div>
+          <div class="limit">Maximum: 35 votes</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- VICE PRESIDENT -->
+  <section class="race">
+    <div class="race-header">
+      <div class="race-label">Race 02</div>
+      <h2>Class Vice President</h2>
+      <p class="race-description">
+        Helps the President enforce classroom rules and takes over when the President is absent.
+      </p>
+    </div>
+
+    <div class="candidates">
+
+      <div class="candidate" data-race="vice_president" data-candidate="Axel W">
+        <div class="candidate-top">
+          <div class="name">Axel W</div>
+          <button class="vote-btn">🗳️ VOTE FOR AXEL W</button>
+        </div>
+        <div class="bar-area">
+          <div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div>
+          <div class="bar"><div class="bar-fill"></div></div>
+          <div class="limit">Maximum: 35 votes</div>
+        </div>
+      </div>
+
+      <div class="candidate" data-race="vice_president" data-candidate="Nkhai">
+        <div class="candidate-top">
+          <div class="name">Nkhai</div>
+          <button class="vote-btn">🗳️ VOTE FOR NKHAI</button>
+        </div>
+        <div class="bar-area">
+          <div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div>
+          <div class="bar"><div class="bar-fill"></div></div>
+          <div class="limit">Maximum: 35 votes</div>
+        </div>
+      </div>
+
+      <div class="candidate" data-race="vice_president" data-candidate="Marquell">
+        <div class="candidate-top">
+          <div class="name">Marquell</div>
+          <button class="vote-btn">🗳️ VOTE FOR MARQUELL</button>
+        </div>
+        <div class="bar-area">
+          <div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div>
+          <div class="bar"><div class="bar-fill"></div></div>
+          <div class="limit">Maximum: 35 votes</div>
+        </div>
+      </div>
+
+      <div class="candidate" data-race="vice_president" data-candidate="Angel">
+        <div class="candidate-top">
+          <div class="name">Angel</div>
+          <button class="vote-btn">🗳️ VOTE FOR ANGEL</button>
+        </div>
+        <div class="bar-area">
+          <div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div>
+          <div class="bar"><div class="bar-fill"></div></div>
+          <div class="limit">Maximum: 35 votes</div>
+        </div>
+      </div>
+
+      <div class="candidate" data-race="vice_president" data-candidate="Nathaniel">
+        <div class="candidate-top">
+          <div class="name">Nathaniel</div>
+          <button class="vote-btn">🗳️ VOTE FOR NATHANIEL</button>
+        </div>
+        <div class="bar-area">
+          <div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div>
+          <div class="bar"><div class="bar-fill"></div></div>
+          <div class="limit">Maximum: 35 votes</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SHERIFF -->
+  <section class="race">
+    <div class="race-header">
+      <div class="race-label">Race 03</div>
+      <h2>Class Sheriff</h2>
+      <p class="race-description">
+        Helps report classroom rule issues.
+      </p>
+    </div>
+
+    <div class="candidates">
+
+      <div class="candidate" data-race="sheriff" data-candidate="Dennis">
+        <div class="candidate-top"><div class="name">Dennis</div><button class="vote-btn">🗳️ VOTE FOR DENNIS</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="sheriff" data-candidate="Franclin">
+        <div class="candidate-top"><div class="name">Franclin</div><button class="vote-btn">🗳️ VOTE FOR FRANCLIN</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="sheriff" data-candidate="Jose">
+        <div class="candidate-top"><div class="name">Jose</div><button class="vote-btn">🗳️ VOTE FOR JOSE</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="sheriff" data-candidate="Malaiyah">
+        <div class="candidate-top"><div class="name">Malaiyah</div><button class="vote-btn">🗳️ VOTE FOR MALAIYAH</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="sheriff" data-candidate="Esmay">
+        <div class="candidate-top"><div class="name">Esmay</div><button class="vote-btn">🗳️ VOTE FOR ESMAY</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="sheriff" data-candidate="Dylan R">
+        <div class="candidate-top"><div class="name">Dylan R</div><button class="vote-btn">🗳️ VOTE FOR DYLAN R</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="sheriff" data-candidate="Axel V">
+        <div class="candidate-top"><div class="name">Axel V</div><button class="vote-btn">🗳️ VOTE FOR AXEL V</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="sheriff" data-candidate="Rey">
+        <div class="candidate-top"><div class="name">Rey</div><button class="vote-btn">🗳️ VOTE FOR REY</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- JUDGE -->
+  <section class="race">
+    <div class="race-header">
+      <div class="race-label">Race 04</div>
+      <h2>Class Judge</h2>
+      <p class="race-description">
+        Decides classroom rule issues after reports are made.
+      </p>
+    </div>
+
+    <div class="candidates">
+
+      <div class="candidate" data-race="judge" data-candidate="Victor">
+        <div class="candidate-top"><div class="name">Victor</div><button class="vote-btn">🗳️ VOTE FOR VICTOR</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="judge" data-candidate="Dylan V">
+        <div class="candidate-top"><div class="name">Dylan V</div><button class="vote-btn">🗳️ VOTE FOR DYLAN V</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="judge" data-candidate="Omar">
+        <div class="candidate-top"><div class="name">Omar</div><button class="vote-btn">🗳️ VOTE FOR OMAR</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="judge" data-candidate="Jamaiya">
+        <div class="candidate-top"><div class="name">Jamaiya</div><button class="vote-btn">🗳️ VOTE FOR JAMAIYA</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="judge" data-candidate="Kevin">
+        <div class="candidate-top"><div class="name">Kevin</div><button class="vote-btn">🗳️ VOTE FOR KEVIN</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="judge" data-candidate="Neveah">
+        <div class="candidate-top"><div class="name">Neveah</div><button class="vote-btn">🗳️ VOTE FOR NEVEAH</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="judge" data-candidate="Esmeralda">
+        <div class="candidate-top"><div class="name">Esmeralda</div><button class="vote-btn">🗳️ VOTE FOR ESMERALDA</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+      <div class="candidate" data-race="judge" data-candidate="Itzel">
+        <div class="candidate-top"><div class="name">Itzel</div><button class="vote-btn">🗳️ VOTE FOR ITZEL</button></div>
+        <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="info">
+    <h3>🗳️ How Voting Works</h3>
+    <p>
+      You may select one candidate for President, one for Vice President,
+      one for Sheriff, and one for Judge. That means you can select up to
+      four candidates total.
+    </p>
+  </div>
+
+</main>
+
+<div class="status" id="status"></div>
+
+<footer>
+  5TH GRADE CLASS ELECTION • OFFICIAL BALLOT
+</footer>
+
+<script>
+const API_URL = "https://class-election-api.wright-ax.workers.dev";
+
+const STORAGE_KEY = "fifthGradeElectionVotesV2";
+
+const races = [
+  "president",
+  "vice_president",
+  "sheriff",
+  "judge"
+];
+
+let choices = {
+  president:null,
+  vice_president:null,
+  sheriff:null,
+  judge:null
+};
+
+function getVoterId(){
+  let id = localStorage.getItem("classElectionVoterId");
+
+  if(!id){
+    id =
+      crypto.randomUUID
+        ? crypto.randomUUID()
+        : "voter-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+
+    localStorage.setItem("classElectionVoterId", id);
+  }
+
+  return id;
+}
+
+const voterId = getVoterId();
+
+function showStatus(message, good=true){
+  const box = document.getElementById("status");
+
+  box.textContent = message;
+  box.className = "status show " + (good ? "good" : "bad");
+
+  clearTimeout(window.statusTimer);
+
+  window.statusTimer = setTimeout(()=>{
+    box.className = "status";
+  },2500);
+}
+
+function updateSummary(){
+  const selected = races.filter(r => choices[r]);
+
+  document.getElementById("racesSelected").textContent =
+    selected.length + "/4";
+
+  document.getElementById("totalSelections").textContent =
+    selected.length;
+}
+
+function renderChoices(){
+  document.querySelectorAll(".candidate").forEach(card=>{
+    const race = card.dataset.race;
+    const candidate = card.dataset.candidate;
+    const button = card.querySelector(".vote-btn");
+
+    if(choices[race] === candidate){
+      card.classList.add("selected");
+      button.textContent = "✓ VOTED FOR " + candidate.toUpperCase();
+    }else{
+      card.classList.remove("selected");
+      button.textContent = "🗳️ VOTE FOR " + candidate.toUpperCase();
+    }
+  });
+
+  updateSummary();
+}
+
+async function saveChoices(){
+  try{
+    const response = await fetch(API_URL + "/api/ballot",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        voterId,
+        choices
+      })
+    });
+
+    const data = await response.json();
+
+    if(!response.ok){
+      throw new Error(data.error || "Could not save vote.");
+    }
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(choices)
+    );
+
+    if(typeof data.voters === "number"){
+      document.getElementById("totalVoters").textContent =
+        data.voters + "/100";
+    }
+
+    showStatus("Vote saved ✓",true);
+
+    await loadResults();
+
+  }catch(error){
+    showStatus(error.message || "Vote failed.",false);
+  }
+}
+
+async function loadBallot(){
+  try{
+    const response = await fetch(
+      API_URL + "/api/ballot?voterId=" +
+      encodeURIComponent(voterId)
+    );
+
+    const data = await response.json();
+
+    if(response.ok && data.choices){
+      choices = {
+        president:data.choices.president || null,
+        vice_president:data.choices.vice_president || null,
+        sheriff:data.choices.sheriff || null,
+        judge:data.choices.judge || null
+      };
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(choices)
+      );
+    }
+  }catch(error){
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if(saved){
+      try{
+        choices = JSON.parse(saved);
+      }catch{}
+    }
+  }
+
+  renderChoices();
+}
+
+async function loadResults(){
+  try{
+    const response = await fetch(API_URL + "/api/results");
+
+    const data = await response.json();
+
+    if(!response.ok) return;
+
+    document.getElementById("totalVoters").textContent =
+      data.voters + "/" + data.maxVoters;
+
+    document.querySelectorAll(".candidate").forEach(card=>{
+      const race = card.dataset.race;
+      const candidate = card.dataset.candidate;
+
+      const count =
+        data.counts?.[race]?.[candidate] || 0;
+
+      const percent =
+        Math.min(100,(count / 35) * 100);
+
+      card.querySelector(".count").textContent =
+        count + " / 35";
+
+      card.querySelector(".bar-fill").style.width =
+        percent + "%";
+    });
+
+  }catch(error){
+    console.log("Results unavailable:",error);
+  }
+}
+
+document.querySelectorAll(".vote-btn").forEach(button=>{
+  button.addEventListener("click",async ()=>{
+    const card = button.closest(".candidate");
+
+    const race = card.dataset.race;
+    const candidate = card.dataset.candidate;
+
+    if(choices[race] === candidate){
+      choices[race] = null;
+    }else{
+      choices[race] = candidate;
+    }
+
+    renderChoices();
+
+    await saveChoices();
+  });
+});
+
+loadBallot();
+loadResults();
+
+setInterval(loadResults,5000);
+</script>
+
+</body>
+</html>

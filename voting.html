@@ -339,6 +339,7 @@ footer{
     Choose one candidate in each race. Your selections are saved so you can
     come back and change them.
   </p>
+  <p class="race-description">Live results refresh every five seconds.</p>
 </section>
 
 <section class="summary">
@@ -562,8 +563,8 @@ footer{
         <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
       </div>
 
-      <div class="candidate" data-race="judge" data-candidate="Jamaiya">
-        <div class="candidate-top"><div class="name">Jamaiya</div><button class="vote-btn">🗳️ VOTE FOR JAMAIYA</button></div>
+      <div class="candidate" data-race="judge" data-candidate="Mecca">
+        <div class="candidate-top"><div class="name">Mecca</div><button class="vote-btn">🗳️ VOTE FOR MECCA</button></div>
         <div class="bar-area"><div class="bar-info"><span>Votes</span><span class="count">0 / 35</span></div><div class="bar"><div class="bar-fill"></div></div><div class="limit">Maximum: 35 votes</div></div>
       </div>
 
@@ -625,6 +626,15 @@ let choices = {
   sheriff:null,
   judge:null
 };
+let backendJudgeCandidate = "Jamaiya";
+
+function choicesForApi(currentChoices){
+  return { ...currentChoices, judge: currentChoices.judge === "Mecca" ? backendJudgeCandidate : currentChoices.judge };
+}
+
+function choicesFromApi(apiChoices){
+  return { ...apiChoices, judge: apiChoices.judge === "Jamaiya" ? "Mecca" : apiChoices.judge };
+}
 
 function getVoterId(){
   let id = localStorage.getItem("classElectionVoterId");
@@ -693,7 +703,7 @@ async function saveChoices(){
       },
       body:JSON.stringify({
         voterId,
-        choices
+        choices:choicesForApi(choices)
       })
     });
 
@@ -736,7 +746,7 @@ async function loadBallot(){
         president:data.choices.president || null,
         vice_president:data.choices.vice_president || null,
         sheriff:data.choices.sheriff || null,
-        judge:data.choices.judge || null
+        judge:choicesFromApi(data.choices).judge || null
       };
 
       localStorage.setItem(
@@ -765,6 +775,8 @@ async function loadResults(){
 
     if(!response.ok) return;
 
+    backendJudgeCandidate = Object.prototype.hasOwnProperty.call(data.counts?.judge || {}, "Mecca") ? "Mecca" : "Jamaiya";
+
     document.getElementById("totalVoters").textContent =
       data.voters + "/" + data.maxVoters;
 
@@ -772,8 +784,8 @@ async function loadResults(){
       const race = card.dataset.race;
       const candidate = card.dataset.candidate;
 
-      const count =
-        data.counts?.[race]?.[candidate] || 0;
+      const apiCandidate = race === "judge" && candidate === "Mecca" && !Object.prototype.hasOwnProperty.call(data.counts?.judge || {}, "Mecca") ? "Jamaiya" : candidate;
+      const count = data.counts?.[race]?.[apiCandidate] || 0;
 
       const percent =
         Math.min(100,(count / 35) * 100);
@@ -809,8 +821,7 @@ document.querySelectorAll(".vote-btn").forEach(button=>{
   });
 });
 
-loadBallot();
-loadResults();
+loadResults().then(loadBallot);
 
 setInterval(loadResults,5000);
 </script>

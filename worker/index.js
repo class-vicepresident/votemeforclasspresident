@@ -2,7 +2,7 @@ const CANDIDATES = {
   president: ["Erick", "Sariya"],
   vice_president: ["Axel W", "Nkhai", "Marquell", "Angel", "Nathaniel"],
   sheriff: ["Dennis", "Franclin", "Jose", "Malaiyah", "Esmay", "Dylan R", "Axel V", "Rey"],
-  judge: ["Victor", "Dylan V", "Omar", "Jamaiya", "Kevin", "Neveah", "Esmeralda", "Itzel"]
+  judge: ["Victor", "Dylan V", "Omar", "Mecca", "Kevin", "Neveah", "Esmeralda", "Itzel"]
 };
 
 const ALLOWED_RACES = Object.keys(CANDIDATES);

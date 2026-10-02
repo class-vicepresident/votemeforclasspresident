@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "class-election-api",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "class-election-votes",
+      "database_id": "a9ed0903-c930-4cfe-8a1d-b6b175cc4ac5",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

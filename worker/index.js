@@ -181,6 +181,25 @@ export default {
         return response({ status: "success", counts: (await getReysResults(env.DB)).counts });
       }
 
+      if (request.method === "POST" && url.pathname === "/api/reys-election/withdraw") {
+        const body = await request.json();
+        const voterId = String(body.voterId || "").trim();
+
+        if (voterId.length < 8 || voterId.length > 100) {
+          return response({ error: "Invalid voterId" }, 400);
+        }
+
+        const removed = await env.DB
+          .prepare("DELETE FROM reys_sheriff_votes WHERE voter_id = ?")
+          .bind(voterId)
+          .run();
+
+        return response({
+          status: removed.meta?.changes ? "removed" : "already_removed",
+          counts: (await getReysResults(env.DB)).counts
+        });
+      }
+
       if (request.method === "GET" && url.pathname === "/api/results") {
         return response(await getResults(env.DB));
       }

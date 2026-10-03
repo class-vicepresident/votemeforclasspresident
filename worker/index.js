@@ -8,6 +8,8 @@ const CANDIDATES = {
 const ALLOWED_RACES = Object.keys(CANDIDATES);
 const MAX_VOTES_PER_CANDIDATE = 35;
 const MAX_VOTERS = 100;
+const REYS_CANDIDATES = ["Rey", "Dennis"];
+const REYS_MAX_VOTES_PER_CANDIDATE = 35;
 
 function corsHeaders() {
   return {
@@ -28,7 +30,23 @@ function response(data, status = 200) {
 }
 
 function validChoice(race, candidate) {
-  return candidate === null || CANDIDATES[race].includes(candidate);
+  return candidate === null || CANDIDATES[race].includes(candidate) || (race === "judge" && candidate === "Jamaiya");
+}
+
+function canonicalCandidate(race, candidate) {
+  return race === "judge" && candidate === "Jamaiya" ? "Mecca" : candidate;
+}
+
+function storageCandidate(race, candidate, databaseSupportsMecca) {
+  const canonical = canonicalCandidate(race, candidate);
+  return race === "judge" && canonical === "Mecca" && !databaseSupportsMecca ? "Jamaiya" : canonical;
+}
+
+async function databaseSupportsMecca(db) {
+  const schema = await db
+    .prepare("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'ballots'")
+    .first();
+  return String(schema?.sql || "").includes("'Mecca'");
 }
 
 async function getBallot(db, voterId) {
@@ -65,7 +83,8 @@ async function getResults(db) {
       const candidate = row[race];
 
       if (candidate) {
-        counts[race][candidate]++;
+        const resultCandidate = canonicalCandidate(race, candidate);
+        if (counts[race][resultCandidate] !== undefined) counts[race][resultCandidate]++;
         hasVote = true;
       }
     }
@@ -77,6 +96,26 @@ async function getResults(db) {
     voters,
     maxVoters: MAX_VOTERS,
     maxVotesPerCandidate: MAX_VOTES_PER_CANDIDATE,
+    counts
+  };
+}
+
+async function getReysResults(db) {
+  const rows = await db
+    .prepare("SELECT candidate, COUNT(*) AS votes FROM reys_sheriff_votes GROUP BY candidate")
+    .all();
+
+  const counts = { Rey: 0, Dennis: 0 };
+  for (const row of rows.results || []) {
+    if (Object.prototype.hasOwnProperty.call(counts, row.candidate)) {
+      counts[row.candidate] = Number(row.votes) || 0;
+    }
+  }
+
+  return {
+    voters: counts.Rey + counts.Dennis,
+    maxVoters: REYS_MAX_VOTES_PER_CANDIDATE * REYS_CANDIDATES.length,
+    maxVotesPerCandidate: REYS_MAX_VOTES_PER_CANDIDATE,
     counts
   };
 }
@@ -93,6 +132,55 @@ export default {
     const url = new URL(request.url);
 
     try {
+      if (request.method === "GET" && url.pathname === "/api/reys-election/results") {
+        return response(await getReysResults(env.DB));
+      }
+
+      if (request.method === "GET" && url.pathname === "/api/reys-election/ballot") {
+        const voterId = (url.searchParams.get("voterId") || "").trim();
+        if (voterId.length < 8 || voterId.length > 100) {
+          return response({ error: "Invalid voterId" }, 400);
+        }
+
+        const ballot = await env.DB
+          .prepare("SELECT candidate FROM reys_sheriff_votes WHERE voter_id = ?")
+          .bind(voterId)
+          .first();
+
+        return response({ hasVoted: Boolean(ballot), candidate: ballot?.candidate || null });
+      }
+
+      if (request.method === "POST" && url.pathname === "/api/reys-election/vote") {
+        const body = await request.json();
+        const voterId = String(body.voterId || "").trim();
+        const candidate = String(body.candidate || "").trim();
+
+        if (voterId.length < 8 || voterId.length > 100) {
+          return response({ error: "Invalid voterId" }, 400);
+        }
+        if (!REYS_CANDIDATES.includes(candidate)) {
+          return response({ status: "invalid_candidate" }, 400);
+        }
+
+        try {
+          const inserted = await env.DB
+            .prepare("INSERT OR IGNORE INTO reys_sheriff_votes (voter_id, candidate, cast_at) VALUES (?, ?, ?)")
+            .bind(voterId, candidate, new Date().toISOString())
+            .run();
+
+          if (!inserted.meta?.changes) {
+            return response({ status: "already_voted", counts: (await getReysResults(env.DB)).counts }, 409);
+          }
+        } catch (error) {
+          if (String(error.message || error).includes("candidate_full")) {
+            return response({ status: "candidate_full", counts: (await getReysResults(env.DB)).counts }, 409);
+          }
+          throw error;
+        }
+
+        return response({ status: "success", counts: (await getReysResults(env.DB)).counts });
+      }
+
       if (request.method === "GET" && url.pathname === "/api/results") {
         return response(await getResults(env.DB));
       }
@@ -113,7 +201,7 @@ export default {
                 president: ballot.president,
                 vice_president: ballot.vice_president,
                 sheriff: ballot.sheriff,
-                judge: ballot.judge
+                judge: canonicalCandidate("judge", ballot.judge)
               }
             : {
                 president: null,
@@ -143,6 +231,7 @@ export default {
         }
 
         const oldBallot = await getBallot(env.DB, voterId);
+        const databaseHasMecca = await databaseSupportsMecca(env.DB);
 
         const oldChoices = oldBallot || {
           president: null,
@@ -156,8 +245,8 @@ export default {
         const newCounts = structuredClone(results.counts);
 
         for (const race of ALLOWED_RACES) {
-          const oldCandidate = oldChoices[race];
-          const newCandidate = choices[race] ?? null;
+          const oldCandidate = canonicalCandidate(race, oldChoices[race]);
+          const newCandidate = canonicalCandidate(race, choices[race] ?? null);
 
           if (oldCandidate) {
             newCounts[race][oldCandidate]--;
@@ -219,10 +308,10 @@ export default {
             `)
             .bind(
               voterId,
-              choices.president ?? null,
-              choices.vice_president ?? null,
-              choices.sheriff ?? null,
-              choices.judge ?? null,
+              storageCandidate("president", choices.president ?? null, databaseHasMecca),
+              storageCandidate("vice_president", choices.vice_president ?? null, databaseHasMecca),
+              storageCandidate("sheriff", choices.sheriff ?? null, databaseHasMecca),
+              storageCandidate("judge", choices.judge ?? null, databaseHasMecca),
               new Date().toISOString()
             )
             .run();
@@ -232,10 +321,10 @@ export default {
           success: true,
           voters: voterCount,
           choices: {
-            president: choices.president ?? null,
-            vice_president: choices.vice_president ?? null,
-            sheriff: choices.sheriff ?? null,
-            judge: choices.judge ?? null
+            president: canonicalCandidate("president", choices.president ?? null),
+            vice_president: canonicalCandidate("vice_president", choices.vice_president ?? null),
+            sheriff: canonicalCandidate("sheriff", choices.sheriff ?? null),
+            judge: canonicalCandidate("judge", choices.judge ?? null)
           }
         });
       }
